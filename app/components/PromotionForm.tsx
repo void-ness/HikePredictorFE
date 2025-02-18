@@ -24,10 +24,13 @@ const PromotionPredictorForm: React.FC = () => {
         company: '',
         designation: '',
         currentCTC: '',
-        totalYoE: '',
-        designationYoE: '',
+        totalYoEYears: '',
+        totalYoEMonths: '',
+        designationYoEYears: '',
+        designationYoEMonths: '',
         performanceRating: ''
     });
+
     const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState<PredictionResult | null>(null);
@@ -44,8 +47,10 @@ const PromotionPredictorForm: React.FC = () => {
             title: 'Experience & Compensation',
             fields: [
                 { name: 'currentCTC', label: 'Current CTC (in lakhs)', type: 'number' },
-                { name: 'totalYoE', label: 'Total Years of Experience', type: 'number' },
-                { name: 'designationYoE', label: 'Years in Current Role', type: 'number' }
+                { name: 'totalYoEYears', label: 'Total Years of Experience (Years)', type: 'number' },
+                { name: 'totalYoEMonths', label: 'Total Years of Experience (Months)', type: 'number' },
+                { name: 'designationYoEYears', label: 'Years in Current Role (Years)', type: 'number' },
+                { name: 'designationYoEMonths', label: 'Years in Current Role (Months)', type: 'number' }
             ]
         },
         {
@@ -56,10 +61,10 @@ const PromotionPredictorForm: React.FC = () => {
                     label: 'Annual Performance Rating',
                     type: 'select',
                     options: [
-                        { value: 'outstanding', label: 'Outstanding' },
-                        { value: 'exceeds', label: 'Exceeds Expectations' },
-                        { value: 'meets', label: 'Meets Expectations' },
-                        { value: 'needsImprovement', label: 'Needs Improvement' }
+                        { value: '4', label: 'Outstanding' },
+                        { value: '3', label: 'Exceeds Expectations' },
+                        { value: '2', label: 'Meets Expectations' },
+                        { value: '1', label: 'Needs Improvement' }
                     ]
                 }
             ]
@@ -100,12 +105,24 @@ const PromotionPredictorForm: React.FC = () => {
 
         try {
             const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+            // Convert years and months to total years
+            const totalYoE = parseFloat(formData.totalYoEYears) + parseFloat(formData.totalYoEMonths) / 12;
+            const designationYoE = parseFloat(formData.designationYoEYears) + parseFloat(formData.designationYoEMonths) / 12;
+
+            const dataToSend = {
+                ...formData,
+                totalYoE: totalYoE.toFixed(2),
+                designationYoE: designationYoE.toFixed(2),
+                performanceRating: parseInt(formData.performanceRating)
+            };
+
             const response = await fetch(apiUrl as string, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(dataToSend),
             });
 
             if (!response.ok) {
@@ -127,8 +144,10 @@ const PromotionPredictorForm: React.FC = () => {
             company: '',
             designation: '',
             currentCTC: '',
-            totalYoE: '',
-            designationYoE: '',
+            totalYoEYears: '',
+            totalYoEMonths: '',
+            designationYoEYears: '',
+            designationYoEMonths: '',
             performanceRating: ''
         });
         setStage(0);
@@ -200,19 +219,81 @@ const PromotionPredictorForm: React.FC = () => {
                     </div>
                 </CardHeader>
 
-
                 <CardContent className="space-y-6">
-                    {currentStage.fields.map((field) => (
-                        <div key={field.name} className="space-y-2">
-                            <label className="text-sm font-medium text-gray-700">
-                                {field.label}
+                    {currentStage.fields.map((field) => {
+                        if (field.name === 'totalYoEYears' || field.name === 'totalYoEMonths' || field.name === 'designationYoEYears' || field.name === 'designationYoEMonths') {
+                            return null; // Skip rendering these fields individually
+                        }
+                        return (
+                            <div key={field.name} className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
+                                    {field.label}
+                                </label>
+                                {renderField(field)}
+                                {errors[field.name] && (
+                                    <p className="text-sm text-red-500">{errors[field.name]}</p>
+                                )}
+                            </div>
+                        );
+                    })}
+
+                    {/* Render total years of experience fields with a single heading */}
+                    {stage === 1 && (
+                        <div className="space-y-4">
+                            <label className="text-lg font-medium text-gray-700">
+                                Total Years of Experience
                             </label>
-                            {renderField(field)}
-                            {errors[field.name] && (
-                                <p className="text-sm text-red-500">{errors[field.name]}</p>
-                            )}
+                            <div className="flex space-x-4">
+                                <div className="flex-1 space-y-2">
+                                    <label className="text-sm font-medium text-gray-700">
+                                        Years
+                                    </label>
+                                    {renderField({ name: 'totalYoEYears', label: 'Years', type: 'number' })}
+                                    {errors.totalYoEYears && (
+                                        <p className="text-sm text-red-500">{errors.totalYoEYears}</p>
+                                    )}
+                                </div>
+                                <div className="flex-1 space-y-2">
+                                    <label className="text-sm font-medium text-gray-700">
+                                        Months
+                                    </label>
+                                    {renderField({ name: 'totalYoEMonths', label: 'Months', type: 'number' })}
+                                    {errors.totalYoEMonths && (
+                                        <p className="text-sm text-red-500">{errors.totalYoEMonths}</p>
+                                    )}
+                                </div>
+                            </div>
                         </div>
-                    ))}
+                    )}
+
+                    {/* Render years in current role fields with a single heading */}
+                    {stage === 1 && (
+                        <div className="space-y-4">
+                            <label className="text-lg font-medium text-gray-700">
+                                Years in Current Role
+                            </label>
+                            <div className="flex space-x-4">
+                                <div className="flex-1 space-y-2">
+                                    <label className="text-sm font-medium text-gray-700">
+                                        Years
+                                    </label>
+                                    {renderField({ name: 'designationYoEYears', label: 'Years', type: 'number' })}
+                                    {errors.designationYoEYears && (
+                                        <p className="text-sm text-red-500">{errors.designationYoEYears}</p>
+                                    )}
+                                </div>
+                                <div className="flex-1 space-y-2">
+                                    <label className="text-sm font-medium text-gray-700">
+                                        Months
+                                    </label>
+                                    {renderField({ name: 'designationYoEMonths', label: 'Months', type: 'number' })}
+                                    {errors.designationYoEMonths && (
+                                        <p className="text-sm text-red-500">{errors.designationYoEMonths}</p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </CardContent>
 
                 <CardFooter className="flex justify-between">

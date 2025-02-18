@@ -2,11 +2,12 @@ export interface FormData {
     company: string;
     designation: string;
     currentCTC: string;
-    totalYoE: string;
-    designationYoE: string;
+    totalYoEYears: string;
+    totalYoEMonths: string;
+    designationYoEYears: string;
+    designationYoEMonths: string;
     performanceRating: string;
 }
-
 
 export interface Field {
     name: keyof FormData;
