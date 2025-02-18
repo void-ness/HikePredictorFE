@@ -41,14 +41,14 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset 
                         <div className="text-center">
                             <p className="text-sm text-gray-600 dark:text-gray-400">Minimum</p>
                             <p className="text-2xl font-bold text-green-600">
-                                {result.min_hike.toFixed(1)}%
+                                {(result.min_hike * 100).toFixed(1)}%
                             </p>
                         </div>
                         <div className="h-8 w-px bg-gray-300 dark:bg-gray-500" />
                         <div className="text-center">
                             <p className="text-sm text-gray-600 dark:text-gray-400">Maximum</p>
                             <p className="text-2xl font-bold text-green-600">
-                                {result.max_hike.toFixed(1)}%
+                                {(result.max_hike * 100).toFixed(1)}%
                             </p>
                         </div>
                     </div>
