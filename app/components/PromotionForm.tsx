@@ -99,7 +99,8 @@ const PromotionPredictorForm: React.FC = () => {
         setIsLoading(true);
 
         try {
-            const response = await fetch(process.env.REACT_APP_API_URL as string, {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+            const response = await fetch(apiUrl as string, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
