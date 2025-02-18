@@ -41,6 +41,21 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset 
         return "Keep up the great work! Continue building your skills.";
     };
 
+    const formatHike = (hike: number): string => {
+        if (hike >= 1 && hike <= 200) {
+            return hike.toFixed(1) + '%';
+        } else if (hike > 200) {
+            let power = 0;
+            while (hike > 200) {
+                hike /= 10;
+                power++;
+            }
+            return hike.toFixed(1) + `%`;
+        } else {
+            return (hike * 100).toFixed(1) + '%';
+        }
+    };
+
     return (
         <Card className="w-full max-w-xl mx-auto bg-white dark:bg-gray-800 mt-8 glass-card">
             <CardHeader>
@@ -62,14 +77,14 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset 
                         <div className="text-center">
                             <p className="text-sm text-gray-600 dark:text-gray-400">Minimum</p>
                             <p className="text-2xl font-bold text-green-600">
-                                {(result.min_hike).toFixed(1)}%
+                                {formatHike(result.min_hike)}
                             </p>
                         </div>
                         <div className="h-8 w-px bg-gray-300 dark:bg-gray-500" />
                         <div className="text-center">
                             <p className="text-sm text-gray-600 dark:text-gray-400">Maximum</p>
                             <p className="text-2xl font-bold text-green-600">
-                                {(result.max_hike).toFixed(1)}%
+                                {formatHike(result.max_hike)}
                             </p>
                         </div>
                     </div>
