@@ -112,6 +112,11 @@ const PromotionPredictorForm: React.FC = () => {
     const handleSubmit = async () => {
         if (!validateStage(stage)) return;
 
+        window.gtag('event', 'predict_button_click', {
+            event_category: 'engagement',
+            event_label: 'start_prediction',
+        })
+
         setIsLoading(true);
 
         try {
@@ -165,6 +170,11 @@ const PromotionPredictorForm: React.FC = () => {
         setStage(0);
         setResult(null);
         setErrors({});
+
+        window.gtag('event', 'reset_form_button_click', {
+            event_category: 'engagement',
+            event_label: 'reset_prediction',
+        })
     };
 
     if (result) {
