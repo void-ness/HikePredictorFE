@@ -8,7 +8,8 @@ const fieldLabels: Record<keyof FormData, string> = {
     totalYoEMonths: "Total Years of Experience (Months)",
     designationYoEYears: "Years in Current Role (Years)",
     designationYoEMonths: "Years in Current Role (Months)",
-    performanceRating: "Performance Rating"
+    performanceRating: "Performance Rating",
+    employmentType: "Employment Type",
 };
 
 export const validateField = (name: keyof FormData, value: string): string => {
@@ -22,7 +23,7 @@ export const validateField = (name: keyof FormData, value: string): string => {
         case 'designationYoEMonths':
             const num = parseFloat(value);
             if (isNaN(num) || num < 0) return `Invalid ${fieldLabels[name]}`;
-            if (name === 'currentCTC' && num > 100) return 'CTC seems unusually high';
+            if (name === 'currentCTC' && num > 150) return 'CTC seems unusually high';
             if ((name === 'totalYoEYears' || name === 'designationYoEYears') && num > 50) return 'Years of experience seems unusually high';
             if ((name === 'totalYoEMonths' || name === 'designationYoEMonths') && num >= 12) return 'Months should be less than 12';
             break;
@@ -35,6 +36,11 @@ export const validateField = (name: keyof FormData, value: string): string => {
         case 'performanceRating':
             if (!['1', '2', '3', '4'].includes(value)) {
                 return 'Please select a valid performance rating';
+            }
+            break;
+        case 'employmentType':
+            if (!['fulltime', 'intern'].includes(value)) {
+                return 'Please select a valid employment type';
             }
             break;
     }

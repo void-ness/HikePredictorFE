@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { LoadingStates } from './LoadingStates';
 import { ResultsDisplay } from './ResultsDisplay';
+import { InternPrompt } from './InternPrompt';
 import { validateField } from '@/utils/validation';
 import type { FormData, Stage, Field } from '@/types';
 
@@ -28,7 +29,8 @@ const PromotionPredictorForm: React.FC = () => {
         totalYoEMonths: '',
         designationYoEYears: '',
         designationYoEMonths: '',
-        performanceRating: ''
+        performanceRating: '',
+        employmentType: ''
     });
 
     const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
@@ -65,6 +67,15 @@ const PromotionPredictorForm: React.FC = () => {
                         { value: '3', label: 'Exceeds Expectations' },
                         { value: '2', label: 'Meets Expectations' },
                         { value: '1', label: 'Needs Improvement' }
+                    ]
+                },
+                {
+                    name: 'employmentType',
+                    label: 'Employment Type',
+                    type: 'select',
+                    options: [
+                        { value: 'fulltime', label: 'Fulltime' },
+                        { value: 'intern', label: 'Intern' }
                     ]
                 }
             ]
@@ -148,7 +159,8 @@ const PromotionPredictorForm: React.FC = () => {
             totalYoEMonths: '',
             designationYoEYears: '',
             designationYoEMonths: '',
-            performanceRating: ''
+            performanceRating: '',
+            employmentType: ''
         });
         setStage(0);
         setResult(null);
@@ -156,6 +168,9 @@ const PromotionPredictorForm: React.FC = () => {
     };
 
     if (result) {
+        if (formData.employmentType === 'intern') {
+            return <InternPrompt onReset={resetForm} />;
+        }
         return <ResultsDisplay result={result} onReset={resetForm} />;
     }
 
