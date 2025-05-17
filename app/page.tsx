@@ -1,7 +1,18 @@
+'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export default function Home() {
+  const handleCheckHikeClick = () => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'check_hike_button_click', {
+        event_category: 'engagement',
+        event_label: 'Start checking Hike',
+      });
+    }
+  }
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Gradient background */}
@@ -28,7 +39,10 @@ export default function Home() {
           Use our tool to predict your promotion and hike.
         </p>
         <Link href="/predict">
-          <Button className="text-xl px-8 py-4 animate-bounce-smooth">
+          <Button
+            className="text-xl px-8 py-4 animate-bounce-smooth"
+            onClick={handleCheckHikeClick}
+          >
             Check Your Hike
           </Button>
         </Link>
