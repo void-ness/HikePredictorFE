@@ -105,7 +105,7 @@ const PromotionPredictorForm: React.FC = () => {
             window.gtag('event', 'form_stage_navigation', {
                 event_category: 'form_progress',
                 event_label: stages[stageIndex]?.title || 'End',
-                stage_index: stageIndex,
+                stage_index: String(stageIndex),
                 direction,
             });
         }
