@@ -5,7 +5,20 @@ const loadingMessages = [
     "Checking industry standards...",
     "Consulting with AI manager...",
     "Calculating promotion probability...",
-    "Finalizing recommendations..."
+    "Finalizing recommendations...",
+    "Crunching numbers...",
+    "Fetching your hike prediction...",
+    "Almost there...",
+    "Good things take time!",
+    "Calculating your next big move...",
+    "Hang tight, magic is happening...",
+    "Optimizing your future...",
+    "Just a moment, success is near...",
+    "Analyzing your data for the best result...",
+    "Preparing your promotion insights...",
+    "Your hike is being calculated...",
+    "Dreaming up your next salary...",
+    "Making HR jealous of your stats..."
 ];
 
 export const LoadingStates: React.FC = () => {
