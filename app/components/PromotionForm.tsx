@@ -99,9 +99,29 @@ const PromotionPredictorForm: React.FC = () => {
         return isValid;
     };
 
+    // Helper function to track form stage navigation
+    const trackFormStage = (stageIndex: number, direction: 'next' | 'previous') => {
+        if (typeof window !== 'undefined' && window.gtag) {
+            window.gtag('event', 'form_stage_navigation', {
+                event_category: 'form_progress',
+                event_label: stages[stageIndex]?.title || 'End',
+                stage_index: stageIndex,
+                direction,
+            });
+        }
+    };
+
     const handleNext = () => {
         if (validateStage(stage)) {
+            trackFormStage(stage + 1, 'next');
             setStage(prev => prev + 1);
+        }
+    };
+
+    const handlePrevious = () => {
+        if (stage > 0) {
+            trackFormStage(stage - 1, 'previous');
+            setStage(prev => prev - 1);
         }
     };
 
@@ -324,7 +344,7 @@ const PromotionPredictorForm: React.FC = () => {
                 <CardFooter className="flex justify-between">
                     <Button
                         variant="outline"
-                        onClick={() => setStage(prev => prev - 1)}
+                        onClick={handlePrevious}
                         disabled={stage === 0}
                         className="gap-2"
                     >
