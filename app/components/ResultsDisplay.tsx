@@ -22,7 +22,27 @@ const tips = [
     "Set clear career goals and create a plan to achieve them.",
     "Be proactive in seeking out opportunities for growth and development.",
     "Showcase your problem-solving skills by taking initiative on projects.",
-    "Communicate effectively and keep your manager informed about your progress and achievements."
+    "Communicate effectively and keep your manager informed about your progress and achievements.",
+    "Obtain relevant certifications or advanced degrees to increase your market value.",
+    "Volunteer for high-visibility projects that align with company strategic goals.",
+    "Build cross-functional relationships to understand different aspects of the business.",
+    "Develop leadership skills by mentoring junior colleagues or leading team initiatives.",
+    "Create measurable impact by setting and achieving specific performance KPIs.",
+    "Present your ideas and solutions to senior leadership to increase your visibility.",
+    "Learn complementary skills that make you more versatile and valuable to the organization.",
+    "Seek stretch assignments that push you outside your comfort zone.",
+    "Build a personal brand within your organization through thought leadership and expertise.",
+    "Understand your company's promotion criteria and create a development plan to meet them.",
+    "Establish yourself as a subject matter expert in key areas relevant to your role.",
+    "Actively participate in company-wide initiatives and committees.",
+    "Develop strong analytical skills to make data-driven decisions and recommendations.",
+    "Cultivate emotional intelligence to better manage relationships and team dynamics.",
+    "Stay informed about your industry's salary trends and negotiate effectively during reviews.",
+    "Build a portfolio of successful projects that demonstrate your impact on business outcomes.",
+    "Seek international experience or work on global projects to broaden your perspective.",
+    "Develop public speaking and presentation skills to effectively communicate your value.",
+    "Create and maintain strategic partnerships both within and outside your organization.",
+    "Focus on developing skills that are future-proof and aligned with emerging industry trends."
 ];
 
 export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset }) => {
