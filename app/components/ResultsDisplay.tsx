@@ -68,7 +68,7 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset 
         setIsSubmittingFeedback(true);
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/predict', '');
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL;
             const response = await fetch(`${apiUrl}/predictions/${predictionId}/feedback`, {
                 method: 'PATCH',
                 headers: {

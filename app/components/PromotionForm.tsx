@@ -154,7 +154,7 @@ const PromotionPredictorForm: React.FC = () => {
                 performanceRating: parseInt(formData.performanceRating)
             };
 
-            const response = await fetch(apiUrl as string, {
+            const response = await fetch(`${apiUrl}/predict`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
