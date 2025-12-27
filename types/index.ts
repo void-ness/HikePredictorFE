@@ -27,4 +27,5 @@ export interface PredictionResult {
     minHike: number;
     maxHike: number;
     confidenceScore: number;
+    predictionId?: number;
 }

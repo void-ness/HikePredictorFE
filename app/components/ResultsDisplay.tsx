@@ -1,6 +1,7 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
+import { ThumbsUp, ThumbsDown } from 'lucide-react';
 
 interface ResultsDisplayProps {
     result: {
@@ -8,6 +9,7 @@ interface ResultsDisplayProps {
         min_hike: number;
         max_hike: number;
         confidence_score: number;
+        predictionId?: number;
     };
     onReset: () => void;
 }
@@ -47,11 +49,54 @@ const tips = [
 
 export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset }) => {
     const [randomTip, setRandomTip] = useState('');
+    const [feedbackGiven, setFeedbackGiven] = useState<boolean | null>(null);
+    const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false);
 
     useEffect(() => {
         const randomIndex = Math.floor(Math.random() * tips.length);
         setRandomTip(tips[randomIndex]);
     }, []);
+
+    const handleFeedback = async (liked: boolean) => {
+        const predictionId = result.predictionId || localStorage.getItem('currentPredictionId');
+
+        if (!predictionId) {
+            console.error('No prediction ID available');
+            return;
+        }
+
+        setIsSubmittingFeedback(true);
+
+        try {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace('/predict', '');
+            const response = await fetch(`${apiUrl}/predictions/${predictionId}/feedback`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ liked }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit feedback');
+            }
+
+            setFeedbackGiven(liked);
+
+            // Track feedback in analytics if available
+            if (typeof window !== 'undefined' && window.gtag) {
+                window.gtag('event', 'prediction_feedback', {
+                    event_category: 'engagement',
+                    event_label: liked ? 'thumbs_up' : 'thumbs_down',
+                    prediction_id: predictionId,
+                });
+            }
+        } catch (error) {
+            console.error('Error submitting feedback:', error);
+        } finally {
+            setIsSubmittingFeedback(false);
+        }
+    };
 
     const getEmoji = () => result.promotion_likelihood ? '🎉' : '💪';
     const getMessage = () => {
@@ -115,6 +160,40 @@ export const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ result, onReset 
                         💡 Tip: {randomTip}
                     </p>
                 </div>
+
+                {feedbackGiven === null ? (
+                    <div className="space-y-3">
+                        <p className="text-center text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Did this prediction match your expectations?
+                        </p>
+                        <div className="flex gap-3 justify-center">
+                            <Button
+                                onClick={() => handleFeedback(true)}
+                                disabled={isSubmittingFeedback}
+                                variant="outline"
+                                className="flex-1 flex items-center justify-center gap-2 hover:bg-green-50 hover:border-green-500 dark:hover:bg-green-900/20"
+                            >
+                                <ThumbsUp className="w-5 h-5" />
+                                Yes
+                            </Button>
+                            <Button
+                                onClick={() => handleFeedback(false)}
+                                disabled={isSubmittingFeedback}
+                                variant="outline"
+                                className="flex-1 flex items-center justify-center gap-2 hover:bg-red-50 hover:border-red-500 dark:hover:bg-red-900/20"
+                            >
+                                <ThumbsDown className="w-5 h-5" />
+                                No
+                            </Button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="text-center p-3 rounded-lg bg-green-50 dark:bg-green-900/20">
+                        <p className="text-sm text-green-700 dark:text-green-300">
+                            ✓ Thank you for your feedback!
+                        </p>
+                    </div>
+                )}
             </CardContent>
             <CardFooter>
                 <Button onClick={onReset} className="w-full">

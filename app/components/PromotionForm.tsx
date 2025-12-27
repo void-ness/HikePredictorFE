@@ -17,6 +17,7 @@ interface PredictionResult {
     min_hike: number;
     max_hike: number;
     confidence_score: number;
+    predictionId?: number;
 }
 
 const PromotionPredictorForm: React.FC = () => {
@@ -166,6 +167,12 @@ const PromotionPredictorForm: React.FC = () => {
             }
 
             const predictionResult: PredictionResult = await response.json();
+
+            // Store predictionId in localStorage if present
+            if (predictionResult.predictionId) {
+                localStorage.setItem('currentPredictionId', predictionResult.predictionId.toString());
+            }
+
             setResult(predictionResult);
         } catch (error) {
             console.error('Error:', error);
