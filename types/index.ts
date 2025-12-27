@@ -8,6 +8,7 @@ export interface FormData {
     designationYoEMonths: string;
     performanceRating: string;
     employmentType: string;
+    teamSize: string;
 }
 
 export interface Field {

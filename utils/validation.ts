@@ -10,6 +10,7 @@ const fieldLabels: Record<keyof FormData, string> = {
     designationYoEMonths: "Years in Current Role (Months)",
     performanceRating: "Performance Rating",
     employmentType: "Employment Type",
+    teamSize: "Team Size",
 };
 
 export const validateField = (name: keyof FormData, value: string): string => {
@@ -41,6 +42,11 @@ export const validateField = (name: keyof FormData, value: string): string => {
         case 'employmentType':
             if (!['fulltime', 'intern'].includes(value)) {
                 return 'Please select a valid employment type';
+            }
+            break;
+        case 'teamSize':
+            if (!['less_than_three', 'between_three_and_seven', 'between_seven_and_ten', 'more_than_ten'].includes(value)) {
+                return 'Please select a valid team size';
             }
             break;
     }
