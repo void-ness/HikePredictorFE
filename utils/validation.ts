@@ -35,7 +35,7 @@ export const validateField = (name: keyof FormData, value: string): string => {
             if (value.length < 2) return 'Designation is too short';
             break;
         case 'performanceRating':
-            if (!['1', '2', '3', '4'].includes(value)) {
+            if (!['1', '2', '3', '4', '5'].includes(value)) {
                 return 'Please select a valid performance rating';
             }
             break;

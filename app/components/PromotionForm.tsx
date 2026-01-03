@@ -86,10 +86,10 @@ const PromotionPredictorForm: React.FC = () => {
                     label: 'Team Size',
                     type: 'select',
                     options: [
-                        { value: 'less_than_three', label: '1-2 members' },
-                        { value: 'between_three_and_seven', label: '3-7 members' },
+                        { value: 'more_than_ten', label: 'More than 10 members' },
                         { value: 'between_seven_and_ten', label: '8-10 members' },
-                        { value: 'more_than_ten', label: 'More than 10 members' }
+                        { value: 'between_three_and_seven', label: '3-7 members' },
+                        { value: 'less_than_three', label: '1-2 members' },
                     ]
                 }
             ]
