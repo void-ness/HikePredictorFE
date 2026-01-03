@@ -65,10 +65,11 @@ const PromotionPredictorForm: React.FC = () => {
                     label: 'Annual Performance Rating',
                     type: 'select',
                     options: [
-                        { value: '4', label: 'Outstanding' },
-                        { value: '3', label: 'Exceeds Expectations' },
-                        { value: '2', label: 'Meets Expectations' },
-                        { value: '1', label: 'Needs Improvement' }
+                        { value: '5', label: 'Outstanding (5)' },
+                        { value: '4', label: 'Exceeds Expectations (4)' },
+                        { value: '3', label: 'Meets Expectations (3)' },
+                        { value: '2', label: 'Needs Improvement (2)' },
+                        { value: '1', label: 'Below Expectations (1)' },
                     ]
                 },
                 {
